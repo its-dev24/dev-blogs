@@ -43,4 +43,5 @@ func deleteAllBlogs() {
 		log.Fatal("Error while deleting all blogs : ", err)
 	}
 	fmt.Println("Deleted Succesfully")
+	fmt.Println("No of documents affected : ", result.DeletedCount)
 }
