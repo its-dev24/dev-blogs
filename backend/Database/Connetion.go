@@ -12,6 +12,7 @@ import (
 )
 
 var _ = godotenv.Load()
+var BlogCollection *mongo.Collection
 
 func init() {
 	connectionString := os.Getenv("CONNECT_STRING")
@@ -22,7 +23,7 @@ func init() {
 		log.Fatal(err)
 	}
 	fmt.Printf("Connected To Database\n")
-	BlogCollection := client.Database(db).Collection("Blogs")
+	BlogCollection = client.Database(db).Collection("Blogs")
 	fmt.Println(BlogCollection)
 
 }

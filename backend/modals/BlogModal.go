@@ -1,7 +1,10 @@
 package modals
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Blog struct {
-	Title  string `json:"title"`
-	Author string `json:"Author"`
-	Blog   string `json:"Blog"`
+	Id       primitive.ObjectID `json:"id,omitempty" bson:"id,omitempty"`
+	Title    string             `json:"title,omitempty" bson:"title,omitmepty"`
+	Author   string             `json:"Author,omitempty" bson:"Author,omitempty"`
+	BlogBody string             `json:"Blog,omitempty" bson"Author,omitempty"`
 }
