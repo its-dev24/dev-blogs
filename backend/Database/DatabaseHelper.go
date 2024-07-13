@@ -45,3 +45,14 @@ func deleteAllBlogs() {
 	fmt.Println("Deleted Succesfully")
 	fmt.Println("No of documents affected : ", result.DeletedCount)
 }
+
+func findAllBlog() {
+	cursor, err := BlogCollection.Find(context.Background(), bson.M{})
+	if err != nil {
+		log.Fatal("Error while Fetching Blogs.. : ", err)
+	}
+	var blogs []bson.M
+
+	err = cursor.All(context.Background(), &blogs)
+	helper.CheckError(err)
+}
