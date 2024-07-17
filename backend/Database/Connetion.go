@@ -11,19 +11,25 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var _ = godotenv.Load()
 var BlogCollection *mongo.Collection
 
 func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Coudn't load env variables", err)
+	}
 	connectionString := os.Getenv("CONNECT_STRING")
 	db := "devblogs"
 	clientOptions := options.Client().ApplyURI(connectionString)
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Could not create client ", err)
 	}
 	fmt.Printf("Connected To Database\n")
 	BlogCollection = client.Database(db).Collection("Blogs")
-	fmt.Println(BlogCollection)
+	if BlogCollection != nil {
+		fmt.Println("Collection created")
+	}
+	// fmt.Println(BlogCollection)
 
 }
