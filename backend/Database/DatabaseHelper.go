@@ -5,15 +5,19 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/its-dev24/dev-blogs/helper"
 	"github.com/its-dev24/dev-blogs/modals"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func InsertOneBlog(blog modals.Blog) {
+func InsertOneBlog(blog modals.Blog) (string, error) {
 	result, err := BlogCollection.InsertOne(context.Background(), blog)
-	helper.CheckError(err)
+	if err != nil {
+		fmt.Println("Erro While Inserting blog : ", err)
+		return "", err
+	}
 	fmt.Printf("ID of Rows inserted : %v", result.InsertedID)
+	return result.InsertedID.(primitive.ObjectID).Hex(), err
 }
 
 func UpdateBlog(blogs modals.Blog) (int, error) {
@@ -31,7 +35,11 @@ func UpdateBlog(blogs modals.Blog) (int, error) {
 }
 
 func DeleteBlog(blogId string) int {
-	filter := bson.M{"_id": blogId}
+	blogIdObject, err := primitive.ObjectIDFromHex(blogId)
+	if err != nil {
+		log.Fatal("error while creating id : ", err)
+	}
+	filter := bson.M{"_id": blogIdObject}
 	result, err := BlogCollection.DeleteOne(context.Background(), filter)
 	if err != nil {
 		log.Fatal("Error While Deleting blog : ", err)
