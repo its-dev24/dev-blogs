@@ -27,21 +27,25 @@ func UpdateBlog(blogs modals.Blog) {
 	fmt.Printf("No of row affected : %v\n", result.MatchedCount)
 }
 
-func DeleteBlog(blogs modals.Blog) {
-	filter := bson.M{"_id": blogs.Id}
+func DeleteBlog(blogId string) int {
+	filter := bson.M{"_id": blogId}
 	result, err := BlogCollection.DeleteOne(context.Background(), filter)
 	if err != nil {
 		log.Fatal("Error While Deleting blog : ", err)
 	}
 	fmt.Println("Deleted Succesfully")
 	fmt.Printf("No of documents affected : %v\n", result.DeletedCount)
+	return int(result.DeletedCount)
 }
 
 func DeleteAllBlogs() (int, error) {
 	result, err := BlogCollection.DeleteMany(context.Background(), bson.M{})
+	if err != nil {
+		return 0, err
+	}
 	fmt.Println("Deleted Succesfully")
 	fmt.Println("No of documents affected : ", result.DeletedCount)
-	return int(result.DeletedCount), err
+	return int(result.DeletedCount), nil
 }
 
 func FindAllBlog() modals.ReturnValue {

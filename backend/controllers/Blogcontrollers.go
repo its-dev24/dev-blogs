@@ -42,4 +42,10 @@ func DeleteAllBlogs(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//
+//Delete a Single Blog
+
+func DeleteABlog(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	deleteCount := database.DeleteBlog(id)
+	json.NewEncoder(w).Encode("No of Blogs Deleted : " + string(deleteCount))
+}
