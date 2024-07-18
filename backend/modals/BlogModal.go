@@ -8,3 +8,7 @@ type Blog struct {
 	Author   string             `json:"author,omitempty" bson:"author,omitempty"`
 	BlogBody string             `json:"blog,omitempty" bson:"blog,omitempty"`
 }
+
+func (b *Blog) isEmpty() bool {
+	return b.Title == "" || b.BlogBody == "" || b.Author == ""
+}
