@@ -13,5 +13,6 @@ func Router() *http.ServeMux {
 	mux.HandleFunc("DELETE /api/blogs", controllers.DeleteAllBlogs)
 	mux.HandleFunc("DELETE /api/blogs/{id}", controllers.DeleteABlog)
 	mux.HandleFunc("PUT /api/blogs/{id}", controllers.UpdateBlog)
+	mux.HandleFunc("POST /api/blogs", controllers.InsertABlog)
 	return &mux
 }

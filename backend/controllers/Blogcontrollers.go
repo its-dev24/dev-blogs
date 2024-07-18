@@ -63,3 +63,21 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode("No of Filed Updated : " + strconv.Itoa(updateCount))
 
 }
+
+//Insert  A Blog
+
+func InsertABlog(w http.ResponseWriter, r *http.Request) {
+	var blogData modals.Blog
+	json.NewDecoder(r.Body).Decode(&blogData)
+	if blogData.IsEmpty() {
+		json.NewEncoder(w).Encode("Empty Json Body")
+		fmt.Println("Json body is empty..")
+		return
+	}
+	insertId, err := database.InsertOneBlog(blogData)
+	if err != nil {
+		json.NewEncoder(w).Encode("Error while inserting Value : " + insertId)
+		return
+	}
+	json.NewEncoder(w).Encode("Inserted Succesfully with id : " + insertId)
+}
