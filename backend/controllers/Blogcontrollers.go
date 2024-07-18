@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	database "github.com/its-dev24/dev-blogs/Database"
+	"github.com/its-dev24/dev-blogs/modals"
 )
 
 //Home screen
@@ -48,4 +49,17 @@ func DeleteABlog(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	deleteCount := database.DeleteBlog(id)
 	json.NewEncoder(w).Encode("No of Blogs Deleted : " + string(deleteCount))
+}
+
+// Update a Blog
+func UpdateBlog(w http.ResponseWriter, r *http.Request) {
+	var blogData modals.Blog
+	json.NewDecoder(r.Body).Decode(&blogData)
+	updateCount, err := database.UpdateBlog(blogData)
+	if err != nil {
+		json.NewEncoder(w).Encode("Error While Inserting : " + err.Error())
+		return
+	}
+	json.NewEncoder(w).Encode("No of Filed Updated : " + strconv.Itoa(updateCount))
+
 }

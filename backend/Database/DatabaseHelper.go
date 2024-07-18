@@ -16,15 +16,18 @@ func InsertOneBlog(blog modals.Blog) {
 	fmt.Printf("ID of Rows inserted : %v", result.InsertedID)
 }
 
-func UpdateBlog(blogs modals.Blog) {
+func UpdateBlog(blogs modals.Blog) (int, error) {
 	filer := bson.M{"_id": blogs.Id}
 	update := bson.M{"$set": bson.M{"title": blogs.Title, "author": blogs.Author, "body": blogs.BlogBody}}
 	result, err := BlogCollection.UpdateOne(context.Background(), filer, update)
 	if err != nil {
 		log.Fatal("Error during Insertion : ", err)
+		return 0, err
+
 	}
-	fmt.Printf("Inserted Sucessfully\n")
+	fmt.Printf("Update Sucessfully\n")
 	fmt.Printf("No of row affected : %v\n", result.MatchedCount)
+	return int(result.MatchedCount), nil
 }
 
 func DeleteBlog(blogId string) int {
