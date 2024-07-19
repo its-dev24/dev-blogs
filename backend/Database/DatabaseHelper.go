@@ -20,8 +20,12 @@ func InsertOneBlog(blog modals.Blog) (string, error) {
 	return result.InsertedID.(primitive.ObjectID).Hex(), err
 }
 
-func UpdateBlog(blogs modals.Blog) (int, error) {
-	filer := bson.M{"_id": blogs.Id}
+func UpdateBlog(id string, blogs modals.Blog) (int, error) {
+	blogObjectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Fatal("Error While convert blogID(update Blog)", err)
+	}
+	filer := bson.M{"_id": blogObjectID}
 	update := bson.M{"$set": bson.M{"title": blogs.Title, "author": blogs.Author, "body": blogs.BlogBody}}
 	result, err := BlogCollection.UpdateOne(context.Background(), filer, update)
 	if err != nil {

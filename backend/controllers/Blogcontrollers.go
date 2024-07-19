@@ -54,8 +54,9 @@ func DeleteABlog(w http.ResponseWriter, r *http.Request) {
 // Update a Blog
 func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 	var blogData modals.Blog
+	id := r.PathValue("id")
 	json.NewDecoder(r.Body).Decode(&blogData)
-	updateCount, err := database.UpdateBlog(blogData)
+	updateCount, err := database.UpdateBlog(id, blogData)
 	if err != nil {
 		json.NewEncoder(w).Encode("Error While Inserting : " + err.Error())
 		return
