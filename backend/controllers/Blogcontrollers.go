@@ -13,12 +13,15 @@ import (
 //Home screen
 
 func HomeScreen(w http.ResponseWriter, r *http.Request) {
+	// w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode("<h1>HOME SCREEN</h1>")
 }
 
 //Fetch all Blogs
 
 func FetchAllBlogs(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	result := database.FindAllBlog()
 	if result.Error != nil {
 		json.NewEncoder(w).Encode("Error while getting Result")
@@ -33,6 +36,7 @@ func FetchAllBlogs(w http.ResponseWriter, r *http.Request) {
 //Delete All values
 
 func DeleteAllBlogs(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 
 	deleteCount, err := database.DeleteAllBlogs()
 	if err != nil {
@@ -46,6 +50,8 @@ func DeleteAllBlogs(w http.ResponseWriter, r *http.Request) {
 //Delete a Single Blog
 
 func DeleteABlog(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	id := r.PathValue("id")
 	deleteCount := database.DeleteBlog(id)
 	json.NewEncoder(w).Encode("No of Blogs Deleted : " + string(deleteCount))
@@ -53,6 +59,8 @@ func DeleteABlog(w http.ResponseWriter, r *http.Request) {
 
 // Update a Blog
 func UpdateBlog(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	var blogData modals.Blog
 	id := r.PathValue("id")
 	json.NewDecoder(r.Body).Decode(&blogData)
@@ -68,6 +76,8 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 //Insert  A Blog
 
 func InsertABlog(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	var blogData modals.Blog
 	json.NewDecoder(r.Body).Decode(&blogData)
 	if blogData.IsEmpty() {
