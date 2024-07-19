@@ -13,8 +13,8 @@ import (
 //Home screen
 
 func HomeScreen(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode("<h1>HOME SCREEN</h1>")
+
+	w.Write([]byte("<h1>HOME SCREEN</h1>"))
 }
 
 //Fetch all Blogs
