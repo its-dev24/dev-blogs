@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	database "github.com/its-dev24/dev-blogs/Database"
+	"github.com/its-dev24/dev-blogs/helper"
 	"github.com/its-dev24/dev-blogs/modals"
 )
 
@@ -24,9 +25,11 @@ func FetchAllBlogs(w http.ResponseWriter, r *http.Request) {
 
 	result := database.FindAllBlog()
 	if result.Error != nil {
-		json.NewEncoder(w).Encode("Error while getting Result")
+		msg := helper.CreateMap("error", "Error while Getting Result"+result.Error.Error())
+		json.NewEncoder(w).Encode(msg)
 	} else if result.Value == nil {
-		json.NewEncoder(w).Encode("No Blog Data")
+		msg := helper.CreateMap("msg", "No Blog Data")
+		json.NewEncoder(w).Encode(msg)
 		return
 	}
 	json.NewEncoder(w).Encode(result.Value)
@@ -43,7 +46,8 @@ func DeleteAllBlogs(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode("Error while deleting Blogs " + err.Error())
 		return
 	}
-	json.NewEncoder(w).Encode("No  of Items Deleted : " + strconv.Itoa(deleteCount))
+	msg := helper.CreateMap("msg", "No of Blogs Deleted"+strconv.Itoa(deleteCount))
+	json.NewEncoder(w).Encode(msg)
 
 }
 
@@ -54,7 +58,8 @@ func DeleteABlog(w http.ResponseWriter, r *http.Request) {
 
 	id := r.PathValue("id")
 	deleteCount := database.DeleteBlog(id)
-	json.NewEncoder(w).Encode("No of Blogs Deleted : " + string(deleteCount))
+	msg := helper.CreateMap("msg", "No of Blogs Deleted"+strconv.Itoa(deleteCount))
+	json.NewEncoder(w).Encode(msg)
 }
 
 // Update a Blog
@@ -69,7 +74,9 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode("Error While Inserting : " + err.Error())
 		return
 	}
-	json.NewEncoder(w).Encode("No of Filed Updated : " + strconv.Itoa(updateCount))
+	msg := helper.CreateMap("msg", "No of Blogs Updated"+strconv.Itoa(updateCount))
+
+	json.NewEncoder(w).Encode(msg)
 
 }
 
